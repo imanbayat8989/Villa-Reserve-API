@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Villa_VillaAPI.Data;
+
 using Villa_VillaAPI.Models;
 using Villa_VillaAPI.Models.DTO;
 
@@ -11,10 +12,19 @@ namespace Villa_VillaAPI.Controllers
 	[ApiController]
 	public class VillaAPIController : ControllerBase
 	{
-		[HttpGet]
+		
+
+		public VillaAPIController()
+        {
+			
+		}
+
+
+        [HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<IEnumerable<VillaDTO>> GetVillas()
 		{
+		
 			return Ok(VillaStore.VillaList);
 		}
 		[HttpGet("{id:int}",Name ="GetVilla")]
@@ -25,6 +35,7 @@ namespace Villa_VillaAPI.Controllers
 		{
 			if (id == 0)
 			{
+				
 				return BadRequest();
 			}
 			var villa = VillaStore.VillaList.FirstOrDefault(u => u.Id == id);
@@ -90,6 +101,7 @@ namespace Villa_VillaAPI.Controllers
 		{
 			if(villaDTO == null || id != villaDTO.Id)
 			{
+				
 				return BadRequest();
 			}
 			var villa = VillaStore.VillaList.FirstOrDefault(u => u.Id ==id);
