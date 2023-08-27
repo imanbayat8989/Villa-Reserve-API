@@ -1,8 +1,10 @@
 
 
 using Microsoft.EntityFrameworkCore;
+using Villa_VillaAPI;
 using Villa_VillaAPI.Data;
-
+using Villa_VillaAPI.Repository;
+using Villa_VillaAPI.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
 	option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
 });
+builder.Services.AddScoped<IVillaRepo, VillaRepo>();
+builder.Services.AddAutoMapper(typeof(MappingConfig));
 builder.Services.AddControllers(option => {
 	//option.ReturnHttpNotAcceptable = true;
 }).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
