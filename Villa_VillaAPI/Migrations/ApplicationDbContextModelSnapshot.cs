@@ -45,21 +45,18 @@ namespace Villa_VillaAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Meter")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Meter")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Occupancy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Occupancy")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Rate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double>("Rate")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -73,41 +70,77 @@ namespace Villa_VillaAPI.Migrations
                         {
                             Id = 1,
                             Amenity = "",
-                            CreateDate = new DateTime(2023, 8, 27, 19, 42, 21, 463, DateTimeKind.Local).AddTicks(5066),
+                            CreateDate = new DateTime(2023, 8, 28, 19, 51, 2, 77, DateTimeKind.Local).AddTicks(3676),
                             Details = "Some dummy text",
                             ImageUrl = "https://www.raffles.com/assets/0/72/2764/2765/2786/6c64d74a-f58d-4de2-a61e-8666413a354c.jpg",
-                            Meter = "550",
+                            Meter = 550,
                             Name = "Royal",
-                            Occupancy = "5",
-                            Rate = "220",
+                            Occupancy = 5,
+                            Rate = 200.0,
                             UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
                             Amenity = "",
-                            CreateDate = new DateTime(2023, 8, 27, 19, 42, 21, 463, DateTimeKind.Local).AddTicks(5120),
+                            CreateDate = new DateTime(2023, 8, 28, 19, 51, 2, 77, DateTimeKind.Local).AddTicks(3731),
                             Details = "Some dummy text",
                             ImageUrl = "https://cf.bstatic.com/xdata/images/hotel/max1024x768/301483778.jpg?k=b1f449beb857de98e8287c34956b672956926c2d03ac185ff8d9a348622c157a&o=&hp=1",
-                            Meter = "450",
+                            Meter = 450,
                             Name = "Swimpoll",
-                            Occupancy = "6",
-                            Rate = "200",
+                            Occupancy = 6,
+                            Rate = 200.0,
                             UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
                             Amenity = "",
-                            CreateDate = new DateTime(2023, 8, 27, 19, 42, 21, 463, DateTimeKind.Local).AddTicks(5122),
+                            CreateDate = new DateTime(2023, 8, 28, 19, 51, 2, 77, DateTimeKind.Local).AddTicks(3733),
                             Details = "Some dummy text",
                             ImageUrl = "https://media.vrbo.com/lodging/30000000/29490000/29484300/29484212/b479b134.c10.jpg",
-                            Meter = "450",
+                            Meter = 350,
                             Name = "partyVilla",
-                            Occupancy = "6",
-                            Rate = "200",
+                            Occupancy = 6,
+                            Rate = 200.0,
                             UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
+                });
+
+            modelBuilder.Entity("Villa_VillaAPI.Models.VillaNumber", b =>
+                {
+                    b.Property<int>("VillaNo")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SpecialDetails")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("VillaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("VillaNo");
+
+                    b.HasIndex("VillaId");
+
+                    b.ToTable("villaNumbers");
+                });
+
+            modelBuilder.Entity("Villa_VillaAPI.Models.VillaNumber", b =>
+                {
+                    b.HasOne("Villa_VillaAPI.Models.Villa", "Villa")
+                        .WithMany()
+                        .HasForeignKey("VillaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Villa");
                 });
 #pragma warning restore 612, 618
         }
