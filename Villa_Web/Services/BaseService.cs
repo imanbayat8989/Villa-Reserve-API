@@ -51,8 +51,28 @@ namespace Villa_Web.Services
 				apiResponse = await client.SendAsync(message);
 
 				var apiContent = await apiResponse.Content.ReadAsStringAsync();
+				try
+				{
+					APIResponse aPIResponse = JsonConvert.DeserializeObject<APIResponse>(apiContent);
+					if (apiResponse.StatusCode==System.Net.HttpStatusCode.BadRequest || apiResponse.StatusCode ==
+						System.Net.HttpStatusCode.NotFound)
+					{
+						aPIResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
+						aPIResponse.IsSuccess = false;
+						var res = JsonConvert.SerializeObject(aPIResponse);
+						var returnObj = JsonConvert.DeserializeObject<T>(res);
+						return returnObj;
+					}
+				}
+				catch (Exception ex)
+				{
+					var aPIResponse = JsonConvert.DeserializeObject<T>(apiContent);
+					return aPIResponse;
+				}
 				var APIResponse = JsonConvert.DeserializeObject<T>(apiContent);
 				return APIResponse;
+				
+				
 			}
 			catch (Exception ex)
 			{
