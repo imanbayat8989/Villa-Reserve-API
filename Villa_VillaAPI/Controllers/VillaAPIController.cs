@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,9 @@ namespace Villa_VillaAPI.Controllers
 
 
         [HttpGet]
+		[Authorize]
+		[ProducesResponseType(StatusCodes.Status403Forbidden)]
+		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<ActionResult<APIResponse>> GetVillas()
 		{
@@ -48,7 +52,10 @@ namespace Villa_VillaAPI.Controllers
 			return _response;
 		}
 
+		[Authorize(Roles = "admin")]
 		[HttpGet("{id:int}",Name ="GetVilla")]
+		[ProducesResponseType(StatusCodes.Status403Forbidden)]
+		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 		[ProducesResponseType(StatusCodes.Status201Created)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -81,6 +88,10 @@ namespace Villa_VillaAPI.Controllers
 		}
 
 		[HttpPost]
+		
+		[ProducesResponseType(StatusCodes.Status201Created)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 		public async Task<ActionResult<APIResponse>> CreateVilla([FromBody]VillaCreateDTO createDTO)
 		{
 			try
@@ -112,9 +123,12 @@ namespace Villa_VillaAPI.Controllers
 		}
 
 		[ProducesResponseType(StatusCodes.Status204NoContent)]
+		[ProducesResponseType(StatusCodes.Status403Forbidden)]
+		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[HttpDelete("{id:int}", Name ="DeleteVilla")]
+		[Authorize(Roles = "CUSTOM")]
 		public async Task<ActionResult<APIResponse>> DeleteVilla(int id)
 		{
 			try
