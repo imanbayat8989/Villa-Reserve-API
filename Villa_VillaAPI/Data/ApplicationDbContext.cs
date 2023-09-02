@@ -9,6 +9,7 @@ namespace Villa_VillaAPI.Data
         {
             
         }
+		public DbSet<LocalUser> LocalUsers { get; set; }
         public DbSet<Villa> villas { get; set; }
 
 		public DbSet<VillaNumber> villaNumbers { get; set; }
