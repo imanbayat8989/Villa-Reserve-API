@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -32,7 +33,7 @@ namespace Villa_Web.Controllers
 
 			return View(list);
 		}
-
+		[Authorize(Roles ="admin")]
 		public async Task<IActionResult> CreateVilla()
 		{
 			List<VillaDTO> list = new();
@@ -56,8 +57,8 @@ namespace Villa_Web.Controllers
 			TempData["success"] = "Villa updated successfully";
 			return View(model);
 		}
-
-		public async Task<IActionResult> UpdateVilla(int villaId)
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> UpdateVilla(int villaId)
 		{
 			var response = await _villaService.GetAsync<APIResponse>(villaId);
 			if (response != null && response.IsSuccess)
@@ -68,8 +69,8 @@ namespace Villa_Web.Controllers
 			}
 			return NotFound();
 		}
-
-		[HttpPost]
+        [Authorize(Roles = "admin")]
+        [HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> UpdateVilla(VillaUpdateDTO model)
 		{
@@ -85,8 +86,8 @@ namespace Villa_Web.Controllers
 			TempData["success"] = "Villa updated successfully";
 			return View(model);
 		}
-
-		public async Task<IActionResult> DeleteVilla(int villaId)
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> DeleteVilla(int villaId)
 		{
 			var response = await _villaService.GetAsync<APIResponse>(villaId);
 			if (response != null && response.IsSuccess)
@@ -96,8 +97,8 @@ namespace Villa_Web.Controllers
 			}
 			return NotFound();
 		}
-
-		[HttpPost]
+        [Authorize(Roles = "admin")]
+        [HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteVilla(VillaDTO model)
 		{

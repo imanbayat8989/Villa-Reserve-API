@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Data;
 using Villa_Web.Models;
 using Villa_Web.Models.DTO;
 using Villa_Web.Models.ViewModel;
@@ -32,11 +34,11 @@ namespace Villa_Web.Controllers
 			if (response != null && response.IsSuccess) 
 			{
 				list = JsonConvert.DeserializeObject<List<VillaNumberDTO>>(Convert.ToString(response.Result));
-			}
+            }
 			return View(list);
 		}
-
-		public async Task<IActionResult> CreateVillaNumber()
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> CreateVillaNumber()
 		{
 			VillaNumberCreateVM villaNumberVM = new();
 			var response = await _villaService.GetAllAsync<APIResponse>();
@@ -51,8 +53,8 @@ namespace Villa_Web.Controllers
 			}
 			return View(villaNumberVM);
 		}
-
-		[HttpPost]
+        [Authorize(Roles = "admin")]
+        [HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> CreateVillaNumber(VillaNumberCreateVM model)
 		{
@@ -84,8 +86,8 @@ namespace Villa_Web.Controllers
 
 			return View(model);
 		}
-
-		public async Task<IActionResult> UpdateVillaNumber(int villaNo)
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> UpdateVillaNumber(int villaNo)
 		{
 			VillaNumberUpdateVM villaNumberVM = new();
 			var response = await _villaNumberService.GetAsync<APIResponse>(villaNo);
@@ -109,8 +111,8 @@ namespace Villa_Web.Controllers
 
 			return NotFound();
 		}
-
-		[HttpPost]
+        [Authorize(Roles = "admin")]
+        [HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> UpdateVillaNumber(VillaNumberUpdateVM model)
 		{
@@ -142,8 +144,8 @@ namespace Villa_Web.Controllers
 
 			return View(model);
 		}
-
-		public async Task<IActionResult> DeleteVillaNumber(int villaNo)
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> DeleteVillaNumber(int villaNo)
 		{
 			VillaNumberDeleteVM villaNumberVM = new();
 			var response = await _villaNumberService.GetAsync<APIResponse>(villaNo);
@@ -167,8 +169,8 @@ namespace Villa_Web.Controllers
 
 			return NotFound();
 		}
-
-		[HttpPost]
+        [Authorize(Roles = "admin")]
+        [HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteVillaNumber(VillaNumberDeleteVM model)
 		{
