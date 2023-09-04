@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Net;
 using Villa_Web;
 using Villa_Web.Services;
 using Villa_Web.Services.IServices;
@@ -62,5 +63,6 @@ app.UseSession();
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 app.Run();
