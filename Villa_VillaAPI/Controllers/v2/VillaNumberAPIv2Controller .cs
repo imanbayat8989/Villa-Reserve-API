@@ -34,7 +34,7 @@ namespace Villa_VillaAPI.Controllers.v2
         }
 
 
-        [HttpGet]
+        [HttpGet("GetString")]
         public IEnumerable<string> Get()
         {
             return new string[] { "Value1", "Value2" };

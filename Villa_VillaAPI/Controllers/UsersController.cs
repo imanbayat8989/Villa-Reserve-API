@@ -5,10 +5,11 @@ using Villa_VillaAPI.Models;
 using Villa_VillaAPI.Models.DTO;
 using Villa_VillaAPI.Repository.IRepository;
 
-namespace Villa_VillaAPI.Controllers.v1
+namespace Villa_VillaAPI.Controllers
 {
     [Route("api/v{version:apiVersion}/UsersAuth")]
     [ApiController]
+    [ApiVersionNeutral]
     public class UsersController : Controller
     {
         private readonly IUserRepo _userRepo;

@@ -23,6 +23,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
 	option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
 });
+
+builder.Services.AddResponseCaching();
+
 builder.Services.AddScoped<IVillaRepo, VillaRepo>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IVillaNumberRepo, VillaNumberRepo>();
@@ -62,6 +65,11 @@ builder.Services.AddAuthentication(x =>
 	});
 
 builder.Services.AddControllers(option => {
+	option.CacheProfiles.Add("Default30",
+		new CacheProfile()
+		{
+			Duration = 30
+		});
 	//option.ReturnHttpNotAcceptable = true;
 }).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

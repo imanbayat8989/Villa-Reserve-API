@@ -33,6 +33,12 @@ namespace Villa_VillaAPI.Controllers.v1
             _dbVillaRepo = villaRepo;
         }
 
+        [HttpGet("GetString")]
+        public IEnumerable<string> Get()
+        {
+            return new string[] { "string1", "string2" };
+        }
+
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
