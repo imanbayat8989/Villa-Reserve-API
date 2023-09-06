@@ -1,14 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Villa_VillaAPI.Models;
 
 namespace Villa_VillaAPI.Data
 {
-	public class ApplicationDbContext : DbContext
+	public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	{
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {
             
         }
+
+		public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 		public DbSet<LocalUser> LocalUsers { get; set; }
         public DbSet<Villa> villas { get; set; }
 
@@ -16,7 +19,8 @@ namespace Villa_VillaAPI.Data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<Villa>().HasData(
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Villa>().HasData(
 				new Villa
 				{
 					Id = 1,

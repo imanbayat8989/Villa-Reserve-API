@@ -10,6 +10,7 @@ using System.Net;
 using System.Text;
 using Villa_VillaAPI;
 using Villa_VillaAPI.Data;
+using Villa_VillaAPI.Models;
 using Villa_VillaAPI.Repository;
 using Villa_VillaAPI.Repository.IRepository;
 
@@ -25,7 +26,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 	option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
 });
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 	.AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddResponseCaching();
