@@ -72,24 +72,38 @@ namespace Villa_VillaAPI.Repository
 			{
 				Token = tokenHandler.WriteToken(token),
 				User = _mapper.Map<UserDTO>(user),
+				Role = roles.FirstOrDefault()
 			};
 			return loginResponseDTO;
 		}
 
-		public async Task<LocalUser> Register(RegistrationRequestDTO registrationRequestDTO)
+		public async Task<UserDTO> Register(RegistrationRequestDTO registrationRequestDTO)
 		{
-			LocalUser user = new LocalUser()
+			ApplicationUser user = new()
 			{
 				UserName = registrationRequestDTO.UserName,
-				Password = registrationRequestDTO.Password,
+				Email=registrationRequestDTO.UserName,
+				NormalizedEmail=registrationRequestDTO.UserName.ToUpper(),
 				Name = registrationRequestDTO.Name,
-				Role = registrationRequestDTO.Role
 			};
 
-			_db.LocalUsers.Add(user);
-			await _db.SaveChangesAsync();
-			user.Password = "";
-			return user;
+			try
+			{
+				var result = await _userManager.CreateAsync(user, registrationRequestDTO.Password);
+				if (result.Succeeded)
+				{
+					await _userManager.AddToRoleAsync(user, "admin");
+					var userToReturn = _db.ApplicationUsers
+						.FirstOrDefault(u => u.UserName == registrationRequestDTO.UserName);
+					return _mapper.Map<UserDTO>(userToReturn);
+				}
+			}
+			catch (Exception ex) 
+			{
+
+			}
+
+			return new UserDTO();
 		}
 	}
 }
